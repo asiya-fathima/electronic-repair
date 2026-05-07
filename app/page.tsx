@@ -1,324 +1,248 @@
-export default function NammaElectronicsWebsite() {
+"use client";
+
+import { useState } from "react";
+
+export default function App() {
+  const [showForm, setShowForm] = useState(false);
+
   const services = [
-    {
-      title: "TV Repair",
-      description:
-        "Expert LED, LCD, Smart TV and home theatre repairs with doorstep service.",
-      icon: "📺",
-    },
-    {
-      title: "Refrigerator Service",
-      description:
-        "Fast cooling issue fixes, gas refilling, and compressor servicing.",
-      icon: "❄️",
-    },
-    {
-      title: "Washing Machine Repair",
-      description:
-        "Top load and front load washing machine repairs by trained technicians.",
-      icon: "🧺",
-    },
-    {
-      title: "AC Installation & Repair",
-      description:
-        "AC installation, maintenance, cooling repair and annual servicing.",
-      icon: "🌬️",
-    },
-    {
-      title: "Microwave & Oven Repair",
-      description:
-        "Quick microwave oven servicing and spare part replacement.",
-      icon: "🍲",
-    },
-    {
-      title: "Mixer & Small Appliances",
-      description:
-        "Repair services for mixers, grinders, fans, and other home appliances.",
-      icon: "🔧",
-    },
+    "TV Repair",
+    "Washing Machine Repair",
+    "Refrigerator Repair",
+    "Microwave Oven Repair",
+    "Water Purifier Repair",
+    "Air Conditioner Repair",
   ];
 
+  const handleBooking = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const name = formData.get("name");
+    const phone = formData.get("phone");
+    const email = formData.get("email");
+    const service = formData.get("service");
+    const issue = formData.get("issue");
+
+    const whatsappNumber = "919876543210";
+
+    const message = `Hello, I would like to book a service.%0A%0A👤 Name: ${name}%0A📞 Phone: ${phone}%0A📧 Email: ${email}%0A🛠 Service: ${service}%0A📝 Issue: ${issue}`;
+
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${message}`,
+      "_blank"
+    );
+
+    setShowForm(false);
+  };
+
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
-      {/* Smooth Scroll */}
-      <style>{`
-        html {
-          scroll-behavior: smooth;
-        }
-      `}</style>
+    <div className="bg-[#f5f7fb] min-h-screen font-sans">
+      {/* Booking Popup */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-2xl relative">
+            <button
+              onClick={() => setShowForm(false)}
+              className="absolute top-4 right-5 text-3xl font-bold"
+            >
+              ×
+            </button>
+
+            <h2 className="text-3xl font-black text-blue-700 mb-6">
+              Book a Service
+            </h2>
+
+            <form
+              onSubmit={handleBooking}
+              className="grid md:grid-cols-2 gap-5"
+            >
+              <input
+                name="name"
+                type="text"
+                placeholder="Your Name"
+                required
+                className="border p-4 rounded-xl"
+              />
+
+              <input
+                name="phone"
+                type="tel"
+                placeholder="Phone Number"
+                required
+                className="border p-4 rounded-xl"
+              />
+
+              <input
+                name="email"
+                type="email"
+                placeholder="Email Address"
+                required
+                className="border p-4 rounded-xl"
+              />
+
+              <select
+                name="service"
+                required
+                className="border p-4 rounded-xl"
+              >
+                <option value="">Select Service</option>
+                {services.map((service) => (
+                  <option key={service} value={service}>
+                    {service}
+                  </option>
+                ))}
+              </select>
+
+              <textarea
+                name="issue"
+                placeholder="Describe your issue"
+                rows="5"
+                required
+                className="border p-4 rounded-xl md:col-span-2"
+              />
+
+              <button
+                type="submit"
+                className="bg-blue-700 text-white py-4 rounded-xl font-bold md:col-span-2"
+              >
+                Book on WhatsApp
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Navbar */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-slate-950/70 backdrop-blur-lg border-b border-white/10">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-5">
-          <h1 className="text-3xl font-extrabold tracking-wide text-cyan-400">
-            Namma Electronics
-          </h1>
+      <header className="bg-white shadow-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-black text-blue-700">NAMMA</h1>
+            <p className="text-xs text-gray-500">
+              ELECTRONICS SERVICE BASE
+            </p>
+          </div>
 
-          <nav className="hidden md:flex gap-8 text-white/90 font-medium">
-            <a href="#home" className="hover:text-cyan-400 transition">
-              Home
-            </a>
-
-            <a href="#services" className="hover:text-cyan-400 transition">
-              Services
-            </a>
-
-            <a href="#about" className="hover:text-cyan-400 transition">
-              About
-            </a>
-
-            <a href="#contact" className="hover:text-cyan-400 transition">
-              Contact
-            </a>
+          <nav className="hidden md:flex gap-8 font-semibold text-sm">
+            <button onClick={() => scrollToSection("home")}>Home</button>
+            <button onClick={() => scrollToSection("services")}>Services</button>
+            <button onClick={() => scrollToSection("about")}>About Us</button>
+            <button onClick={() => scrollToSection("contact")}>Contact</button>
           </nav>
+
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold"
+          >
+            Book a Service
+          </button>
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section
         id="home"
-        className="relative min-h-screen flex items-center px-6 bg-gradient-to-br from-slate-950 via-blue-950 to-cyan-950 overflow-hidden text-white"
+        className="bg-[#031b3d] text-white py-20 px-6"
       >
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,#22d3ee,_transparent_35%),radial-gradient(circle_at_bottom_left,#2563eb,_transparent_35%)]"></div>
-
-        <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-14 items-center py-32">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="inline-block px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-sm mb-6">
-              Trusted Home Appliance Repair Experts
-            </div>
-
-            <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
-              Fast & Reliable{" "}
-              <span className="text-cyan-400">Electronics</span> Repair Services
-            </h1>
-
-            <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-8 max-w-2xl">
-              Professional repair and maintenance for TVs, Refrigerators,
-              Washing Machines, ACs, Microwaves, and all home appliances.
-            </p>
-
-            <div className="flex flex-wrap gap-5 mb-10">
-              <a
-                href="#contact"
-                className="bg-cyan-400 text-slate-950 px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:scale-105 transition duration-300"
-              >
-                Book Service
-              </a>
-
-              <a
-                href="#services"
-                className="border border-white/30 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white hover:text-slate-900 transition duration-300"
-              >
-                Explore Services
-              </a>
-            </div>
-
-            <div className="flex flex-wrap gap-8 text-slate-300">
-              <div>
-                <h3 className="text-3xl font-bold text-white">10K+</h3>
-                <p>Repairs Completed</p>
-              </div>
-
-              <div>
-                <h3 className="text-3xl font-bold text-white">24/7</h3>
-                <p>Support Service</p>
-              </div>
-
-              <div>
-                <h3 className="text-3xl font-bold text-white">100%</h3>
-                <p>Customer Satisfaction</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -top-10 -left-10 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
-
-            <div className="relative bg-white/10 border border-white/10 backdrop-blur-2xl rounded-[40px] p-6 shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1200&auto=format&fit=crop"
-                alt="Electronics Repair"
-                className="rounded-[30px] w-full h-[500px] object-cover"
-              />
-
-              <div className="absolute bottom-10 left-10 right-10 bg-slate-900/70 backdrop-blur-lg border border-white/10 rounded-3xl p-6">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="text-2xl font-bold">Same Day Service</h3>
-                    <p className="text-slate-300 mt-1">
-                      Affordable & Trusted Repairs
-                    </p>
-                  </div>
-
-                  <div className="bg-cyan-400 text-slate-950 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-bold shadow-lg">
-                    ⚡
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold mb-4">Our Services</h2>
-
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              We provide professional repair and maintenance services for all
-              major electronic home appliances.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-3xl p-8 shadow-md hover:shadow-2xl hover:-translate-y-2 transition duration-300 border border-slate-100"
-              >
-                <div className="text-5xl mb-5">{service.icon}</div>
-
-                <h3 className="text-2xl font-semibold mb-3">
-                  {service.title}
-                </h3>
-
-                <p className="text-slate-600 leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="bg-white py-24 px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=1200&auto=format&fit=crop"
-              alt="Technician"
-              className="rounded-3xl shadow-xl object-cover h-[420px] w-full"
-            />
-          </div>
-
-          <div>
-            <h2 className="text-4xl font-bold mb-6">
-              Why Choose Namma Electronics?
+            <h2 className="text-5xl font-black leading-tight mb-6">
+              Reliable Repairs.
+              <br />
+              Trusted Service.
             </h2>
 
-            <div className="space-y-5">
-              <div className="flex gap-4 items-start">
-                <div className="text-2xl">✔️</div>
+            <p className="text-lg text-gray-300 leading-8 mb-8">
+              Fast and trusted home appliance repair services at your doorstep.
+            </p>
 
-                <div>
-                  <h4 className="font-semibold text-xl">
-                    Certified Technicians
-                  </h4>
+            <div className="flex gap-4 flex-wrap">
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-blue-600 px-7 py-4 rounded-xl font-bold"
+              >
+                Book a Service
+              </button>
 
-                  <p className="text-slate-600">
-                    Experienced experts for all brands and appliances.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="text-2xl">⚡</div>
-
-                <div>
-                  <h4 className="font-semibold text-xl">
-                    Quick Doorstep Service
-                  </h4>
-
-                  <p className="text-slate-600">
-                    Fast response and same-day service availability.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="text-2xl">🛠️</div>
-
-                <div>
-                  <h4 className="font-semibold text-xl">
-                    Genuine Spare Parts
-                  </h4>
-
-                  <p className="text-slate-600">
-                    High-quality replacement parts with warranty support.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4 items-start">
-                <div className="text-2xl">💰</div>
-
-                <div>
-                  <h4 className="font-semibold text-xl">
-                    Affordable Pricing
-                  </h4>
-
-                  <p className="text-slate-600">
-                    Transparent pricing with no hidden charges.
-                  </p>
-                </div>
-              </div>
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="border border-white px-7 py-4 rounded-xl font-bold"
+              >
+                Contact Us
+              </button>
             </div>
           </div>
+
+          <img
+            src="/technician.png"
+            alt="Technician"
+            className="rounded-3xl w-full h-[500px] object-cover"
+          />
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section
-        id="contact"
-        className="bg-gradient-to-r from-cyan-600 to-blue-800 py-24 px-6 text-white"
-      >
+      {/* Services */}
+      <section id="services" className="max-w-7xl mx-auto px-6 py-20">
+        <div className="text-center mb-14">
+          <h2 className="text-4xl font-black">Our Services</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service) => (
+            <div
+              key={service}
+              className="bg-white rounded-3xl p-8 shadow-md"
+            >
+              <div className="text-5xl mb-5">🔧</div>
+              <h3 className="text-2xl font-bold mb-3">{service}</h3>
+              <p className="text-gray-600 mb-5">
+                Professional and affordable repair service.
+              </p>
+
+              <button
+                onClick={() => setShowForm(true)}
+                className="text-blue-700 font-bold"
+              >
+                Book Now →
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About */}
+      <section id="about" className="bg-white py-20 px-6">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-5">
-            Need Appliance Repair?
-          </h2>
+          <h2 className="text-4xl font-black mb-6">About Us</h2>
 
-          <p className="text-lg text-blue-100 mb-8">
-            Contact Namma Electronics today for fast and reliable home appliance
-            repair services.
+          <p className="text-gray-600 text-lg leading-8">
+            We provide reliable appliance repair services with experienced
+            technicians and genuine spare parts.
           </p>
-
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
-            <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-md">
-              <h3 className="font-semibold text-xl mb-2">📞 Call Us</h3>
-              <p>+91 98765 43210</p>
-            </div>
-
-            <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-md">
-              <h3 className="font-semibold text-xl mb-2">📧 Email</h3>
-              <p>support@nammaelectronics.com</p>
-            </div>
-
-            <div className="bg-white/10 rounded-2xl p-6 backdrop-blur-md">
-              <h3 className="font-semibold text-xl mb-2">📍 Location</h3>
-              <p>Bangalore, Karnataka</p>
-            </div>
-          </div>
-
-          <button className="bg-white text-blue-900 px-8 py-4 rounded-2xl font-bold shadow-lg hover:scale-105 transition">
-            Schedule Service Now
-          </button>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-300 py-8 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <h3 className="text-2xl font-bold text-white">
-            Namma Electronics
-          </h3>
+      {/* Contact */}
+      <section id="contact" className="bg-[#031b3d] text-white py-20 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-4xl font-black mb-6">Contact Us</h2>
 
-          <p>© 2026 Namma Electronics. All Rights Reserved.</p>
+          <div className="space-y-4 text-lg">
+            <p>📞 +91 98765 43210</p>
+            <p>📍 Bangalore, Karnataka</p>
+            <p>✉ support@nammaelectronics.com</p>
+          </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }
