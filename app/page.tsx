@@ -14,10 +14,10 @@ export default function App() {
     "Air Conditioner Repair",
   ];
 
-  const handleBooking = (e) => {
-    e.preventDefault();
+  const handleBooking = (event: any) => {
+    event.preventDefault();
 
-    const formData = new FormData(e.target);
+    const formData = new FormData(event.target);
 
     const name = formData.get("name");
     const phone = formData.get("phone");
@@ -37,7 +37,7 @@ export default function App() {
     setShowForm(false);
   };
 
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
 
     if (section) {
@@ -106,7 +106,7 @@ export default function App() {
               <textarea
                 name="issue"
                 placeholder="Describe your issue"
-                rows="5"
+                rows={5}
                 required
                 className="border p-4 rounded-xl md:col-span-2"
               />
